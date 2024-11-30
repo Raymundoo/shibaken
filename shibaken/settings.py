@@ -52,7 +52,10 @@ DJANGO_APPS = [
    'django.contrib.staticfiles',
 ]
 
-PROJECT_APPS = []
+PROJECT_APPS = [
+    'shibaken.apps.users',
+]
+AUTH_USER_MODEL = 'users.User'
 
 THIRD_PARTY_APPS = []
 
@@ -68,12 +71,14 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'shibaken.urls'
+ROOT_URLCONF = 'shibaken.core.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            BASE_DIR / 'shibaken/templates',
+         ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -86,8 +91,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'shibaken.wsgi.application'
-
+WSGI_APPLICATION = 'shibaken.core.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
@@ -137,8 +141,31 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'static'
+STATICFILES_DIRS = [
+    BASE_DIR / 'shibaken/static',
+]
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOCALE_PATHS = [
+    BASE_DIR / 'locale',
+]
+
+
+
+# Keep this at the end of the file.
+# Use this section as the last resort. Try to fix everything 
+# with django-environ package
+try:
+    # Try import settings_server.py for local purpose.
+    from settings_server import *
+except ImportError:
+    # Doesn't matter if settings_server.py not exist.
+    pass
